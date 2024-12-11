@@ -123,17 +123,16 @@ class NomisApp:
                 
     async def claim_refferal(self, query: str, retries=3):
         url = 'https://cms-api.nomis.cc/api/users/claim-referrals'
-        data = {}
         headers = {
             **self.headers,
-            'Content-Length': str(len(data)),
+            'Content-Length': '2',
             'Content-Type': 'application/json',
             'X-App-Init-Data': query
         }
         for attempt in range(retries):
             try:
                 async with ClientSession(timeout=ClientTimeout(total=20)) as session:
-                    async with session.post(url=url, headers=headers, json=data) as response:
+                    async with session.post(url=url, headers=headers, json={}) as response:
                         response.raise_for_status()
                         return await response.json()
             except (Exception, ClientResponseError) as e:
