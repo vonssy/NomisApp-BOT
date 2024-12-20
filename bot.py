@@ -297,6 +297,7 @@ class NomisApp:
             try:
                 async with ClientSession(timeout=ClientTimeout(total=20)) as session:
                     async with session.post(url=url, headers=headers, data=data) as response:
+                        print(response.status, await response.text())
                         response.raise_for_status()
                         result = await response.json()
                         return result['data']['result']
@@ -519,6 +520,8 @@ class NomisApp:
                                     f"{Fore.RED+Style.BRIGHT} Isn't Claimed {Style.RESET_ALL}"
                                     f"{Fore.MAGENTA+Style.BRIGHT}]{Style.RESET_ALL}"
                                 )
+                                break
+                            
                             await asyncio.sleep(1)
 
                         if count == max_count:
@@ -610,7 +613,7 @@ class NomisApp:
                 
     async def main(self):
         try:
-            with open('query.txt', 'r') as file:
+            with open('data.txt', 'r') as file:
                 queries = [line.strip() for line in file if line.strip()]
 
             while True:
